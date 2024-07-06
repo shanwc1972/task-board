@@ -67,13 +67,13 @@ function renderTaskList() {
     const tasks = readTasksFromStorage();
     //Empty existing task cards out of the lanes
     
-    const todoList = $('#to-do');
+    const todoList = $('#todo-cards');
     todoList.empty();
 
-    const inProgressList = $('#in-progress');
+    const inProgressList = $('#in-progress-cards');
     inProgressList.empty();
 
-    const doneList = $('#done');
+    const doneList = $('#done-cards');
     doneList.empty();
 
     // Loop through the tasks and create task items for each status
@@ -118,6 +118,8 @@ function handleAddTask(event){
         description: taskDesc,
         status: 'to-do',
     };
+    //Read the task oject array back for recent changes
+    taskList = readTasksFromStorage();
 
     //Append new task to the task object array
     taskList.push(newTask);
