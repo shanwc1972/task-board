@@ -117,6 +117,11 @@ function handleAddTask(event){
         description: taskDesc,
         status: 'to-do',
     };
+
+    if((taskTitle == "") || (taskDate == "") || (taskDesc =="")) {
+      alert("This task entry is incomplete. Please ensure that you complete all the fields for Task Title, due date and description accordingly");
+      return handleAddTask;
+    }
     //Read the task oject array back for recent changes
     taskList = readTasksFromStorage();
 
