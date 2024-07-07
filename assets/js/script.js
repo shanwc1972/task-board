@@ -4,12 +4,12 @@ const taskTitleInputEl = $('#tasktitle');
 const taskDateInputEl = $('#taskduedate');
 const taskDescriptionInputEl = $('#taskdesc');
 
-
+//The following function reads the tasklist from localstorage. Resolves conditions where reading from the list would produce a null result 
 function readTasksFromStorage() {
-    // Retrieve tasks from localStorage and parse the JSON to an array.
+    // Retrieve tasks from localStorage and parse the JSON to an array
         let arrTasks = JSON.parse(localStorage.getItem('tasks'));
   
-    // If no tasks were retrieved from localStorage, assign tasks to a new empty array to push to later.
+    // If no tasks were retrieved from localStorage, assign tasks to a new empty array.
     if (!arrTasks) {
       arrTasks = [];
     }
@@ -20,15 +20,14 @@ function readTasksFromStorage() {
 
 // Retrieve tasks and nextId from localStorage
 let taskList = readTasksFromStorage();
-let nextId = JSON.parse(localStorage.getItem("nextId"));
 
-// Todo: create a function to generate a unique task id
+// The following function generates a unique task id and returns it
 function generateTaskId() {
     const nTaskID = crypto.randomUUID();
     return nTaskID;
 }
 
-// Todo: create a function to create a task card
+// The function below create a task card and returns the reference to the card insertion point
 function createTaskCard(task) {
     const taskCard = $('<div>')
     .addClass('card task-card draggable my-3')
@@ -47,7 +46,7 @@ function createTaskCard(task) {
         const now = dayjs();
         const taskDueDate = dayjs(task.dueDate, 'DD/MM/YYYY');
     
-        // ? If the task is due today, make the card yellow. If it is overdue, make it red.
+        // If the task is due today, make the card yellow. If it is overdue, make it red.
         if (now.isSame(taskDueDate, 'day')) {
           taskCard.addClass('bg-warning text-white');
         } else if (now.isAfter(taskDueDate)) {
@@ -127,7 +126,7 @@ function handleAddTask(event){
     //Update our new augmented array into LocalStorage
     localStorage.setItem('tasks', JSON.stringify(taskList));
 
-    //Render the data to the screen
+    //Render the change to the screen
     renderTaskList();
     
     //Clear form inputs
@@ -136,7 +135,7 @@ function handleAddTask(event){
     taskDescriptionInputEl.val('');
 }
 
-// Todo: create a function to handle deleting a task
+// The following function deletes a task when the delete button is clicked
 function handleDeleteTask(event){
     const taskId = $(this).attr('data-task-id');
     const tasks = readTasksFromStorage();
@@ -147,12 +146,14 @@ function handleDeleteTask(event){
         }
     });
 
+    //Update the modified tasklist back to localstorage 
     localStorage.setItem('tasks', JSON.stringify(tasks));
 
+    //Render our new changes
     renderTaskList();
 }
 
-// Todo: create a function to handle dropping a task into a new status lane
+// The function below handle dropping a task into a new status lane
 function handleDrop(event, ui) {
     const tasks = readTasksFromStorage();
 
@@ -166,11 +167,12 @@ function handleDrop(event, ui) {
         }
       }
 
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      renderTaskList();
+    //Update our changes back to localstorage
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTaskList();
 }
 
-//Event listener for the submit button on the modal
+//Added an event listener for the submit button on the modal
 taskSubmitEl.on('click', handleAddTask);
 
 // When the document is ready, print the project data to the screen and make the lanes droppable. Also, initialize the date picker.
